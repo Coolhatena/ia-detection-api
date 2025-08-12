@@ -14,6 +14,7 @@ async def process_image(file: UploadFile = File(...)):
     image_array = np.frombuffer(contents, np.uint8)
     image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
 
+    # TODO: Process image using YOLO here
     # Process with OpenCV (example: convert to grayscale)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
