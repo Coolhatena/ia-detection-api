@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from ultralytics import YOLO
 import numpy as np
 import cv2
@@ -7,6 +8,14 @@ from io import BytesIO
 
 model = YOLO("yolov8n.pt").to("cuda")
 app = FastAPI()
+
+origins = ["*"]
+app.add_middleware(
+	CORSMiddleware,
+	allow_origins=origins,
+	allow_methods=origins,
+	allow_headers=origins
+)
 
 @app.post("/process-image/")
 async def process_image(file: UploadFile = File(...)):
