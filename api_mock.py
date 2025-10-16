@@ -44,7 +44,6 @@ async def process_image(file: UploadFile = File(...)):
     if not success:
         return {"isPassed": False, "isContinue": False}
 
-    # Retorna la imagen procesada igual que tu API original
     return StreamingResponse(
         BytesIO(buf.tobytes()),
         media_type=file.content_type,
