@@ -1,9 +1,9 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
 import numpy as np
 import cv2
 import random
+import base64
 from io import BytesIO
 import uvicorn
 
@@ -25,7 +25,7 @@ async def process_image(file: UploadFile = File(...)):
     img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
 
     if img is None:
-        return {"isPassed": False, "isContinue": False}
+        return {"image": "", "isPassed": False, "isContinue": False}
 
     # Texto centrado "PRUEBA"
     h, w = img.shape[:2]
@@ -39,19 +39,20 @@ async def process_image(file: UploadFile = File(...)):
     cv2.putText(img, text, (x, y), font, scale, (0, 0, 0), thickness + 2, cv2.LINE_AA)
     cv2.putText(img, text, (x, y), font, scale, (255, 255, 255), thickness, cv2.LINE_AA)
 
+    # Codificar imagen en base64
     ext = "." + (file.content_type.split("/")[1] if "/" in file.content_type else "jpg")
     success, buf = cv2.imencode(ext, img)
     if not success:
-        return {"isPassed": False, "isContinue": False}
+        return {"image": "", "isPassed": False, "isContinue": False}
 
-    return StreamingResponse(
-        BytesIO(buf.tobytes()),
-        media_type=file.content_type,
-        headers={
-            "isPassed": str(bool(random.getrandbits(1))).lower(),
-            "isContinue": str(bool(random.getrandbits(1))).lower()
-        }
-    )
+    img_base64 = base64.b64encode(buf.tobytes()).decode("utf-8")
+
+    return {
+        "image": img_base64,
+        "isPassed": bool(random.getrandbits(1)),
+        "isContinue": bool(random.getrandbits(1))
+    }
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8141, workers=1, log_level="info")
+
