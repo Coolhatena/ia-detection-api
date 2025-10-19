@@ -46,7 +46,7 @@ async def process_image(file: UploadFile = File(...)):
         return {"image": "", "isPassed": False, "isContinue": False}
 
     img_base64 = base64.b64encode(buf.tobytes()).decode("utf-8")
-
+    # TODO: Integrate this kind of return into main API
     return {
         "image": img_base64,
         "isPassed": bool(random.getrandbits(1)),
