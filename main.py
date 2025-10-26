@@ -6,6 +6,10 @@ import numpy as np
 import cv2
 from io import BytesIO
 
+
+# TODO:
+# Add login
+# Add detection sequences
 model = YOLO("yolov8n.pt").to("cuda")
 app = FastAPI()
 
