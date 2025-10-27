@@ -1,0 +1,5 @@
+cable
+caja
+manual
+teclado
+teclado_bolsa
