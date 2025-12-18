@@ -47,6 +47,7 @@ async def process_image(file: UploadFile = File(...)):
 
     img_base64 = base64.b64encode(buf.tobytes()).decode("utf-8")
 
+	# Regresar imagen procesada y valores de evaluacion al front-end
     return {
         "image": img_base64,
         "isPassed": bool(random.getrandbits(1)),
