@@ -27,7 +27,6 @@ async def process_image(file: UploadFile = File(...)):
     if img is None:
         return {"image": "", "isPassed": False, "isContinue": False}
 
-    # Texto centrado "PRUEBA"
     h, w = img.shape[:2]
     text = "PRUEBA"
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -39,7 +38,7 @@ async def process_image(file: UploadFile = File(...)):
     cv2.putText(img, text, (x, y), font, scale, (0, 0, 0), thickness + 2, cv2.LINE_AA)
     cv2.putText(img, text, (x, y), font, scale, (255, 255, 255), thickness, cv2.LINE_AA)
 
-    # Codificar imagen en base64
+    # Encode image as base64
     ext = "." + (file.content_type.split("/")[1] if "/" in file.content_type else "jpg")
     success, buf = cv2.imencode(ext, img)
     if not success:
@@ -47,7 +46,7 @@ async def process_image(file: UploadFile = File(...)):
 
     img_base64 = base64.b64encode(buf.tobytes()).decode("utf-8")
 
-	# Regresar imagen procesada y valores de evaluacion al front-end
+	# send processed image and meta data
     return {
         "image": img_base64,
         "isPassed": bool(random.getrandbits(1)),
