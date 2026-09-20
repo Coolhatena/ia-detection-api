@@ -1,0 +1,40 @@
+{
+  "_comment": [
+    "Configuración de humo para probar el detector REAL antes de tener pesos propios.",
+    "Usa clases del modelo yolov8n preentrenado con COCO, así que detecta objetos",
+    "de escritorio que tienes a mano en vez de piezas de empaque.",
+    "Arranca con:  CONFIG_PATH=config/sequences.coco.json uvicorn main:app --host 0.0.0.0 --port 8000",
+    "Sirve para confirmar que torch, la GPU y la anotación funcionan. No es la configuración real."
+  ],
+
+  "defaults": { "min_confidence": 0.4 },
+
+  "classes": {
+    "keyboard": "Teclado",
+    "mouse": "Ratón",
+    "cell phone": "Teléfono",
+    "book": "Libro",
+    "bottle": "Botella"
+  },
+
+  "sequences": [
+    {
+      "id": "prueba-escritorio",
+      "name": "Prueba de escritorio",
+      "description": "Comprobación del modelo preentrenado con objetos comunes.",
+      "steps": [
+        {
+          "instruction": "Toma una foto de tu teclado completo.",
+          "expect": [{ "class": "keyboard", "min_count": 1 }]
+        },
+        {
+          "instruction": "Pon el teléfono junto al ratón y fotografía ambos.",
+          "expect": [
+            { "class": "cell phone", "min_count": 1 },
+            { "class": "mouse", "min_count": 1 }
+          ]
+        }
+      ]
+    }
+  ]
+}

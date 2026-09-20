@@ -1,0 +1,37 @@
+{
+  "defaults": { "min_confidence": 0.45 },
+
+  "classes": {
+    "cable": "Cable de alimentación",
+    "caja": "Caja de cartón",
+    "manual": "Manual de usuario",
+    "teclado": "Teclado",
+    "teclado_bolsa": "Teclado dentro de la bolsa"
+  },
+
+  "sequences": [
+    {
+      "id": "empaque-teclado",
+      "name": "Empaque de teclado",
+      "description": "Validación del contenido de la caja antes de sellarla.",
+      "steps": [
+        {
+          "instruction": "Abre la caja y toma una foto completa del interior.",
+          "expect": [{ "class": "caja", "min_count": 1 }]
+        },
+        {
+          "instruction": "Coloca el manual sobre el teclado embolsado y fotografía ambos.",
+          "expect": [
+            { "class": "manual", "min_count": 1 },
+            { "class": "teclado_bolsa", "min_count": 1 }
+          ],
+          "min_confidence": 0.6
+        },
+        {
+          "instruction": "Acomoda el cable en su compartimento y toma la foto.",
+          "expect": [{ "class": "cable", "min_count": 1 }]
+        }
+      ]
+    }
+  ]
+}
